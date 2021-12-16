@@ -1,5 +1,6 @@
 package com.zk.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,13 +10,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zk.entity.ZkData;
 import com.zk.op.Zk;
 import com.zk.web.constants.Constants;
+import org.yaml.snakeyaml.introspector.PropertyUtils;
 
 @Controller
 @RequestMapping("/read")
@@ -55,7 +56,7 @@ public class ZkReadController {
 		Zk reader = new Zk(cxnstr);
 
 		List<String> children = reader.getChildren(path);
-		if (CollectionUtils.isNotEmpty(children)) {
+		if (!CollectionUtils.isEmpty(children)) {
 			Collections.sort(children);
 		}
 		model.addAttribute("children", children);
@@ -64,14 +65,10 @@ public class ZkReadController {
 
 		model.addAttribute("data", zkData.getDataString());
 		model.addAttribute("dataSize", zkData.getData().length);
-		try {
-			Map<String, Object> statMap = PropertyUtils.describe(zkData.getStat());
-			statMap.remove("class");
-			model.addAttribute("stat", statMap);
-		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			LOGGER.error(e.getMessage(), e);
-		}
 
+		Map<String, Object> statMap = JSON.parseObject(JSON.toJSONString(zkData.getStat()));
+		statMap.remove("class");
+		model.addAttribute("stat", statMap);
 		return "node";
 	}
 

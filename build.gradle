@@ -1,46 +1,48 @@
-group = 'com.zk'
-version = "1.0.0.RELEASE"
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'war'
-apply plugin: 'eclipse'
-apply plugin: 'eclipse-wtp'
-apply plugin: 'jetty'
-
-dependencies {
-   compile 'com.github.adyliu:zkclient:2.1.1'
-
-   compile 'org.springframework:spring-webmvc:4.1.1.RELEASE'
-   compile 'org.springframework:spring-context-support:4.1.1.RELEASE'
-
-   compile 'org.freemarker:freemarker:2.3.19'
-   compile 'com.fasterxml.jackson.core:jackson-databind:2.1.4'
-   compile 'commons-io:commons-io:2.4'
-   compile 'org.apache.commons:commons-lang3:3.3.2'
-   compile 'commons-beanutils:commons-beanutils:1.9.2'
-   
-   providedCompile 'servletapi:servlet-api:2.4'
-
-   testCompile 'junit:junit:4.11'
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+    id 'java'
 }
 
-eclipse {
-   classpath { downloadSources=true }
+apply plugin: 'java'
+apply plugin: 'war'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springVersion")
+    }
 }
 
 tasks.withType(JavaCompile) {
-   sourceCompatibility = 1.7
-   targetCompatibility = 1.7
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 }
+
 
 repositories {
-   maven { url "http://maven.oschina.net/content/groups/public" }
-   mavenCentral()
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+    maven { url "https://maven.oschina.net/content/groups/public" }
 }
 
+dependencies {
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:31.0.1-jre'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.6.1'
+    implementation group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.7.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation group: 'com.101tec', name: 'zkclient', version: '0.11'
+    implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.78'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '2.6.1'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    compileOnly 'javax.servlet:servlet-api:2.5'
+}
 
-task wrapper(type: Wrapper) { gradleVersion = '2.2.1' }
+jar{
+    enabled(true)
+}
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-

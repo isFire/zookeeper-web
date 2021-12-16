@@ -35,3 +35,6 @@ local.properties
 zookeeper-web.iml
 zookeeper-web.ipr
 zookeeper-web.iws
+
+# Ignore Gradle build output directory
+build

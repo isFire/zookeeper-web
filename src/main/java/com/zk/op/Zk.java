@@ -2,21 +2,20 @@ package com.zk.op;
 
 import java.util.List;
 
+import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.zkclient.ZkClient;
 import com.zk.entity.ZkData;
 
 public class Zk {
    private static final Logger LOGGER = LoggerFactory.getLogger(Zk.class);
-   // 192.168.161.61:2181,192.168.161.83:2181
    private ZkClient client;
 
    public boolean exists(String path) {
-      if (path == null || path.trim().equals("")) {
+      if (StringUtils.isBlank(path)) {
          throw new IllegalArgumentException("path can not be null or empty");
       }
       return getClient().exists(path);
@@ -37,14 +36,14 @@ public class Zk {
    public void create(String path, byte[] data) {
       path = getPath(path);
       getClient().createPersistent(path, true);
-      Stat stat = getClient().writeData(path, data);
-      LOGGER.info("create: node:{}, stat{}:", path, stat);
+      getClient().writeData(path, data);
+      LOGGER.info("create: node:{}", path);
    }
 
    public void edit(String path, byte[] data) {
       path = getPath(path);
-      Stat stat = getClient().writeData(path, data);
-      LOGGER.info("edit: node:{}, stat{}:", path, stat);
+      getClient().writeData(path, data);
+      LOGGER.info("edit: node:{}", path);
    }
 
    public void delete(String path) {

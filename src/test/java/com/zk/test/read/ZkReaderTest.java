@@ -43,7 +43,7 @@ public class ZkReaderTest {
 
    @BeforeClass
    public static void initReader() {
-      reader = new Zk("192.168.161.61:2181,192.168.161.83:2181");
+      reader = new Zk("10.0.4.160:2181,10.0.4.160:3181,10.0.4.160:4181");
    }
 
 }

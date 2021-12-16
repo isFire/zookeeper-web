@@ -2,10 +2,10 @@ package com.zk.op;
 
 import javax.servlet.http.HttpSession;
 
+import org.I0Itec.zkclient.ZkClient;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.github.zkclient.ZkClient;
 
 public class ClientCacheManager {
 	
