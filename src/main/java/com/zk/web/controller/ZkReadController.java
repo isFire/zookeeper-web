@@ -6,6 +6,7 @@ import com.zk.op.ZkApi;
 import com.zk.web.constants.Constants;
 import com.zk.web.util.AuthUtils;
 import com.zk.web.util.SizeUtils;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -52,13 +53,12 @@ public class ZkReadController {
 		if (StringUtils.isBlank(cxnstr)) {
 			return "redirect:/";
 		}
-		path = StringUtils.endsWith(path, "/") ? StringUtils.substring(path, 0, StringUtils.lastIndexOf(path, "/"))
-				: path;
+		path = StringUtils.endsWith(path, "/") ? StringUtils.substring(path, 0, StringUtils.lastIndexOf(path, "/")) : path;
 		path = StringUtils.isBlank(path) ? "/" : StringUtils.trimToEmpty(path);
 		model.addAttribute("pathList", Arrays.asList(StringUtils.split(path, "/")));
 
 
-		List<String> children = null;
+		List<String> children = new ArrayList<>();
 		try {
 			children = zkApi.getChildren(path);
 		} catch (InterruptedException | KeeperException e) {

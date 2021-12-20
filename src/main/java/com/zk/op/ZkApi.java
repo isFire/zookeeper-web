@@ -1,11 +1,11 @@
 package com.zk.op;
 
 import com.zk.entity.ZkData;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class ZkApi {
       if (StringUtils.isBlank(path)) {
          throw new IllegalArgumentException("path can not be null or empty");
       }
-      Stat exists = getClient().exists(path, false);
+      getClient().exists(path, true);
       return false;
    }
 
@@ -34,22 +34,19 @@ public class ZkApi {
    }
 
    public List<String> getChildren(String path) throws InterruptedException, KeeperException {
-      return getClient().getChildren(getPath(path), false);
+      return getClient().getChildren(getPath(path), true);
    }
 
    public void create(String path, byte[] data) throws InterruptedException, KeeperException {
       path = getPath(path);
-      getClient().create(path, data, new ArrayList<>(), CreateMode.PERSISTENT);
-      // getClient().createPersistent(path, true);
-      // getClient().writeData(path, data);
+      getClient().create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
       log.info("create: node:{}", path);
    }
 
    public void edit(String path, byte[] data) throws InterruptedException, KeeperException {
       path = getPath(path);
-      Stat exists = getClient().exists(path, false);
-      getClient().setData(path, data, exists.getVersion());
-      // getClient().writeData(path, data);
+      // 如果只需要根据最新版本更新，则设置为-1，否则需要指定版本，表示基于哪个版本进行更新
+      getClient().setData(path, data, -1);
       log.info("edit: node:{}", path);
    }
 
@@ -57,7 +54,6 @@ public class ZkApi {
       path = getPath(path);
       Stat exists = getClient().exists(path, false);
       getClient().delete(path, exists.getVersion());
-      // log.info("delete: node:{}, boolean{}:", path, del);
    }
 
    public void deleteRecursive(String path) throws InterruptedException, KeeperException {
