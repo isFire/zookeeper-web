@@ -2,12 +2,14 @@ package com.zk.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zk.web.util.AuthUtils;
 
+@Slf4j
 @Controller
 @RequestMapping("")
 public class LoginController {

@@ -2,6 +2,7 @@ package com.zk.entity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Objects;
 import org.apache.zookeeper.data.Stat;
 
 public class ZkData {
@@ -19,7 +20,11 @@ public class ZkData {
    }
 
    public String getDataString() {
-      return new String(getData(), StandardCharsets.UTF_8);
+      String dataStr = "";
+      if (Objects.nonNull(getData())) {
+         return new String(getData(), StandardCharsets.UTF_8);
+      }
+      return dataStr;
    }
    
    public byte[] getData() {

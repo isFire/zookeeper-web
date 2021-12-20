@@ -1,10 +1,12 @@
+<#assign base=req.contextPath />
 <!DOCTYPE html>
 <html>
 	<head>
+        <base id="base" href="${base}">
 		<title>Zookeeper-Web</title>
-		<script src="${host}/js/jquery.min.js" type="text/javascript"></script>
-		<link href="${host}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<link href="${host}/css/zk-web.css" rel="stylesheet" type="text/css">
+		<script src="${base}/static/js/jquery.min.js" type="text/javascript"></script>
+		<link href="${base}/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="${base}/static/css/zkApi-web.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 
@@ -19,7 +21,7 @@
 					<p style="display:none">${stackTrace!}</p>
                 </div>
                 <div class="error-actions">
-                    <a href="${host}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span> 回主页 </a>
+                    <a href="${base}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span> 回主页 </a>
                 </div>
             </div>
         </div>

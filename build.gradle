@@ -1,48 +1,39 @@
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    id 'org.springframework.boot' version '2.6.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
 
-apply plugin: 'java'
-apply plugin: 'war'
+group = 'com.zk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springVersion")
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
     }
 }
-
-tasks.withType(JavaCompile) {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
-
 
 repositories {
-    // Use Maven Central for resolving dependencies.
+    mavenLocal()
     mavenCentral()
-    maven { url "https://maven.oschina.net/content/groups/public" }
 }
 
 dependencies {
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:31.0.1-jre'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.6.1'
-    implementation group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.7.0'
+    implementation('org.springframework.boot:spring-boot-starter-freemarker') {
+        exclude group: 'org.apache.logging.log4j'
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation(group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.7.0') {
+        exclude group: 'org.slf4j'
+    }
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-    implementation group: 'com.101tec', name: 'zkclient', version: '0.11'
     implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.78'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '2.6.1'
-    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
-    compileOnly 'javax.servlet:servlet-api:2.5'
+    testImplementation 'junit:junit:4.13.2'
 }
 
-jar{
-    enabled(true)
+test {
+    useJUnitPlatform()
 }
-
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
