@@ -1,6 +1,6 @@
 package com.zk.op;
 
-import com.zk.entity.ZkData;
+import com.zk.dto.ZkDataDTO;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.zookeeper.CreateMode;
@@ -17,20 +17,12 @@ public class ZkApi {
 
    private static final Logger log = LoggerFactory.getLogger(ZkApi.class);
 
-   public boolean exists(String path) throws InterruptedException, KeeperException {
-      if (StringUtils.isBlank(path)) {
-         throw new IllegalArgumentException("path can not be null or empty");
-      }
-      getClient().exists(path, true);
-      return false;
-   }
-
-   public ZkData readData(String path) throws InterruptedException, KeeperException {
-      ZkData zkdata = new ZkData();
+   public ZkDataDTO readData(String path) throws InterruptedException, KeeperException {
+      ZkDataDTO zkData = new ZkDataDTO();
       Stat stat = new Stat();
-      zkdata.setData(getClient().getData(getPath(path), false, stat));
-      zkdata.setStat(stat);
-      return zkdata;
+      zkData.setData(getClient().getData(getPath(path), false, stat));
+      zkData.setStat(stat);
+      return zkData;
    }
 
    public List<String> getChildren(String path) throws InterruptedException, KeeperException {
@@ -56,14 +48,9 @@ public class ZkApi {
       getClient().delete(path, exists.getVersion());
    }
 
-   public void deleteRecursive(String path) throws InterruptedException, KeeperException {
-      delete(path);
-   }
-
    public ZooKeeper getClient() {
       return ClientCacheManager.getClient();
    }
-
 
    private String getPath(String path) {
       path = path == null ? "/" : path.trim();

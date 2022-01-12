@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/error")
 public class ErrorController {
-   private static final String[] error_code = new String[] { "404", "500" };
+
+   private static final String[] ERROR_CODE = new String[] { "404", "500" };
 
    @RequestMapping("/{code}")
    public String error404(String code) {
       code = StringUtils.trimToNull(code);
-      if (!ArrayUtils.contains(error_code, code)) {
+      if (!ArrayUtils.contains(ERROR_CODE, code)) {
          code = "404";
       }
       return "common/error" + code;

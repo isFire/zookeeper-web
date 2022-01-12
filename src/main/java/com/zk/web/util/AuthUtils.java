@@ -1,6 +1,5 @@
 package com.zk.web.util;
 
-import com.zk.util.ConfUtils;
 import java.io.IOException;
 import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ public class AuthUtils {
 	private static final String ZK_USER = "zk_user";
 	private static final String USER_FILE_PATH = "conf/user.properties";
 
-	private static Logger log = LoggerFactory.getLogger(ConfUtils.class);
+	private static Logger log = LoggerFactory.getLogger(AuthUtils.class);
 
 	public static boolean isLogin() {
 		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

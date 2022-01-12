@@ -48,14 +48,15 @@
     <hr class="">
     <div class="row">
         <#if addrs??>
-            <#list addrs?keys as key>
+            <#list addrs as zkData>
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="${base}/read/addr?cxnstr=${addrs[key]!''}"><h3
-                                        contenteditable="false">${key!''}</h3></a>
+                            <a href="${base}/read/addr?cxnstr=${zkData.zkUrl!''}">
+                                <h3 contenteditable="false">${zkData.zkName!''}</h3>
+                            </a>
                         </div>
-                        <div class="panel-body wrap" contenteditable="false">${addrs[key]!''}</div>
+                        <div class="panel-body wrap" contenteditable="false">${zkData.zkUrl!''}</div>
                     </div>
                 </div>
             </#list>

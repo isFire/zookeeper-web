@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.servlet.http.HttpSession;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.ZooKeeper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -26,6 +29,11 @@ public class ClientCacheManager {
         String key = PRE + cxnStr;
         Object obj = session.getAttribute(key);
         if (Objects.isNull(obj)) {
+            CuratorFramework framework = CuratorFrameworkFactory.builder()
+                    .connectString(cxnStr)
+                    .retryPolicy(new ExponentialBackoffRetry(1000, 3))
+                    .build();
+            framework.start();
             watcher = new ZookeeperWatcher(cxnStr);
             CLIENT_MAP.put(session, watcher);
         } else {

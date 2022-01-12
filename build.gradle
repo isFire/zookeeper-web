@@ -23,12 +23,15 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-freemarker') {
         exclude group: 'org.apache.logging.log4j'
     }
+    implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation(group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.7.0') {
         exclude group: 'org.slf4j'
     }
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.0'
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.78'
     testImplementation 'junit:junit:4.13.2'

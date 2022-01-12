@@ -1,7 +1,7 @@
 package com.zk.web.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zk.entity.ZkData;
+import com.zk.dto.ZkDataDTO;
 import com.zk.op.ZkApi;
 import com.zk.web.constants.Constants;
 import com.zk.web.util.AuthUtils;
@@ -69,7 +69,7 @@ public class ZkReadController {
 		}
 		model.addAttribute("children", children);
 
-		ZkData zkData = new ZkData();
+		ZkDataDTO zkData = new ZkDataDTO();
 		try {
 			zkData = zkApi.readData(path);
 		} catch (Exception e) {
